@@ -12,10 +12,10 @@ var tingodb = require('tingodb')({
   memStore: true
 });
 
-var Bitcore = require('bitcore-lib');
-var Bitcore_ = {
-  btc: Bitcore,
-  bch: require('bitcore-lib-cash')
+var Mangacore = require('mangacore-lib');
+var Mangacore_ = {
+  btc: Mangacore,
+  bch: require('mangacore-lib-cash')
 };
 
 var Common = require('../../lib/common');
@@ -86,13 +86,13 @@ helpers.getStorage = function() {
 };
 
 helpers.signMessage = function(text, privKey) {
-  var priv = new Bitcore.PrivateKey(privKey);
+  var priv = new Mangacore.PrivateKey(privKey);
   var hash = Utils.hashMessage(text);
-  return Bitcore.crypto.ECDSA.sign(hash, priv, 'little').toString();
+  return Mangacore.crypto.ECDSA.sign(hash, priv, 'little').toString();
 };
 
 helpers.signRequestPubKey = function(requestPubKey, xPrivKey) {
-  var priv = new Bitcore.HDPrivateKey(xPrivKey).deriveChild(Constants.PATHS.REQUEST_KEY_AUTH).privateKey;
+  var priv = new Mangacore.HDPrivateKey(xPrivKey).deriveChild(Constants.PATHS.REQUEST_KEY_AUTH).privateKey;
   return helpers.signMessage(requestPubKey, priv);
 };
 
@@ -127,20 +127,20 @@ helpers._generateCopayersTestData = function() {
 
   console.log('var copayers = [');
   _.each(xPrivKeys, function(xPrivKeyStr, c) {
-    var xpriv = Bitcore.HDPrivateKey(xPrivKeyStr);
-    var xpub = Bitcore.HDPublicKey(xpriv);
+    var xpriv = Mangacore.HDPrivateKey(xPrivKeyStr);
+    var xpub = Mangacore.HDPublicKey(xpriv);
 
     var xpriv_45H = xpriv.deriveChild(45, true);
-    var xpub_45H = Bitcore.HDPublicKey(xpriv_45H);
+    var xpub_45H = Mangacore.HDPublicKey(xpriv_45H);
     var id45 = Model.Copayer._xPubToCopayerId('btc', xpub_45H.toString());
 
     var xpriv_44H_0H_0H = xpriv.deriveChild(44, true).deriveChild(0, true).deriveChild(0, true);
-    var xpub_44H_0H_0H = Bitcore.HDPublicKey(xpriv_44H_0H_0H);
+    var xpub_44H_0H_0H = Mangacore.HDPublicKey(xpriv_44H_0H_0H);
     var id44btc = Model.Copayer._xPubToCopayerId('btc', xpub_44H_0H_0H.toString());
     var id44bch = Model.Copayer._xPubToCopayerId('bch', xpub_44H_0H_0H.toString());
 
     var xpriv_1H = xpriv.deriveChild(1, true);
-    var xpub_1H = Bitcore.HDPublicKey(xpriv_1H);
+    var xpub_1H = Mangacore.HDPublicKey(xpriv_1H);
     var priv = xpriv_1H.deriveChild(0).privateKey;
     var pub = xpub_1H.deriveChild(0).publicKey;
 
@@ -232,7 +232,7 @@ helpers.createAndJoinWallet = function(m, n, opts, cb) {
 
 
 helpers.randomTXID = function() {
-  return Bitcore.crypto.Hash.sha256(new Buffer(Math.random() * 100000)).toString('hex');;
+  return Mangacore.crypto.Hash.sha256(new Buffer(Math.random() * 100000)).toString('hex');;
 };
 
 helpers.toSatoshi = function(btc) {
@@ -286,7 +286,7 @@ helpers.stubUtxos = function(server, wallet, amounts, opts, cb) {
 
   if (!helpers._utxos) helpers._utxos = {};
 
-  var S = Bitcore_[wallet.coin].Script;
+  var S = Mangacore_[wallet.coin].Script;
 
   async.waterfall([
 
@@ -416,7 +416,7 @@ helpers.clientSign = function(txp, derivedXPrivKey) {
   var privs = [];
   var derived = {};
 
-  var xpriv = new Bitcore.HDPrivateKey(derivedXPrivKey, txp.network);
+  var xpriv = new Mangacore.HDPrivateKey(derivedXPrivKey, txp.network);
 
   _.each(txp.inputs, function(i) {
     if (!derived[i.path]) {
@@ -425,7 +425,7 @@ helpers.clientSign = function(txp, derivedXPrivKey) {
     }
   });
 
-  var t = txp.getBitcoreTx();
+  var t = txp.getMangacoreTx();
 
   var signatures = _.map(privs, function(priv, i) {
     return t.getSignatures(priv);

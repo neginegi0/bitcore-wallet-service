@@ -1,28 +1,28 @@
 
-# bitcore-wallet-service
+# mangacore-wallet-service
 
-[![NPM Package](https://img.shields.io/npm/v/bitcore-wallet-service.svg?style=flat-square)](https://www.npmjs.org/package/bitcore-wallet-service)
-[![Build Status](https://img.shields.io/travis/bitpay/bitcore-wallet-service.svg?branch=master&style=flat-square)](https://travis-ci.org/bitpay/bitcore-wallet-service)
-[![Coverage Status](https://coveralls.io/repos/bitpay/bitcore-wallet-service/badge.svg?branch=master)](https://coveralls.io/r/bitpay/bitcore-wallet-service?branch=master)
+[![NPM Package](https://img.shields.io/npm/v/mangacore-wallet-service.svg?style=flat-square)](https://www.npmjs.org/package/mangacore-wallet-service)
+[![Build Status](https://img.shields.io/travis/bitpay/mangacore-wallet-service.svg?branch=master&style=flat-square)](https://travis-ci.org/bitpay/mangacore-wallet-service)
+[![Coverage Status](https://coveralls.io/repos/bitpay/mangacore-wallet-service/badge.svg?branch=master)](https://coveralls.io/r/bitpay/mangacore-wallet-service?branch=master)
 
-A Multisig HD Bitcore Wallet Service.
+A Multisig HD Mangacore Wallet Service.
 
 # Description
 
-Bitcore Wallet Service facilitates multisig HD wallets creation and operation through a (hopefully) simple and intuitive REST API.
+Mangacore Wallet Service facilitates multisig HD wallets creation and operation through a (hopefully) simple and intuitive REST API.
 
 BWS can usually be installed within minutes and accommodates all the needed infrastructure for peers in a multisig wallet to communicate and operate – with minimum server trust.
   
-See [Bitcore-wallet-client](https://github.com/bitpay/bitcore-wallet-client) for the *official* client library that communicates to BWS and verifies its response. Also check [Bitcore-wallet](https://github.com/bitpay/bitcore-wallet) for a simple CLI wallet implementation that relies on BWS.
+See [Mangacore-wallet-client](https://github.com/bitpay/mangacore-wallet-client) for the *official* client library that communicates to BWS and verifies its response. Also check [Mangacore-wallet](https://github.com/bitpay/mangacore-wallet) for a simple CLI wallet implementation that relies on BWS.
 
 BWS is been used in production enviroments for [Copay Wallet](https://copay.io), [Bitpay App wallet](https://bitpay.com/wallet) and others.  
 
-More about BWS at https://blog.bitpay.com/announcing-the-bitcore-wallet-suite/
+More about BWS at https://blog.bitpay.com/announcing-the-mangacore-wallet-suite/
 
 # Getting Started
 ```
- git clone https://github.com/bitpay/bitcore-wallet-service.git
- cd bitcore-wallet-service
+ git clone https://github.com/bitpay/mangacore-wallet-service.git
+ cd mangacore-wallet-service
  npm install
  npm start
 ```
@@ -32,7 +32,7 @@ This will launch the BWS service (with default settings) at `http://localhost:32
 
 BWS needs mongoDB. You can configure the connection at `config.js`
 
-BWS supports SSL and Clustering. For a detailed guide on installing BWS with extra features see [Installing BWS](https://github.com/bitpay/bitcore-wallet-service/blob/master/installation.md). 
+BWS supports SSL and Clustering. For a detailed guide on installing BWS with extra features see [Installing BWS](https://github.com/bitpay/mangacore-wallet-service/blob/master/installation.md). 
 
 BWS uses by default a Request Rate Limitation to CreateWallet endpoint. If you need to modify it, check defaults.js' `Defaults.RateLimit`
 
@@ -41,14 +41,14 @@ BWS uses by default a Request Rate Limitation to CreateWallet endpoint. If you n
 BWS can be used with PM2 with the provided `app.js` script: 
  
 ```
-  pm2 start app.js --name "bitcoin-wallet-service"
+  pm2 start app.js --name "mangacoin-wallet-service"
 ```
 
 # Security Considerations
  * Private keys are never sent to BWS. Copayers store them locally.
  * Extended public keys are stored on BWS. This allows BWS to easily check wallet balance, send offline notifications to copayers, etc.
  * During wallet creation, the initial copayer creates a wallet secret that contains a private key. All copayers need to prove they have the secret by signing their information with this private key when joining the wallet. The secret should be shared using secured channels.
- * A copayer could join the wallet more than once, and there is no mechanism to prevent this. See [wallet](https://github.com/bitpay/bitcore-wallet)'s confirm command, for a method for confirming copayers.
+ * A copayer could join the wallet more than once, and there is no mechanism to prevent this. See [wallet](https://github.com/bitpay/mangacore-wallet)'s confirm command, for a method for confirming copayers.
  * All BWS responses are verified:
   * Addresses and change addresses are derived independently and locally by the copayers from their local data.
   * TX Proposals templates are signed by copayers and verified by others, so the BWS cannot create or tamper with them.
@@ -69,12 +69,12 @@ BWS can be used with PM2 with the provided `app.js` script:
   // CAroot: '', // ex. 'AddTrustExternalCARoot.crt'
 ```
 
-@dabura667 made a report about how to use letsencrypt with BWS: https://github.com/bitpay/bitcore-wallet-service/issues/423
+@dabura667 made a report about how to use letsencrypt with BWS: https://github.com/bitpay/mangacore-wallet-service/issues/423
   
 
 # REST API
 
-Note: all currency amounts are in units of satoshis (1/100,000,000 of a bitcoin).
+Note: all currency amounts are in units of satoshis (1/100,000,000 of a mangacoin).
 
 ## Authentication
 
@@ -85,14 +85,14 @@ Note: all currency amounts are in units of satoshis (1/100,000,000 of a bitcoin)
 ```
 Identity is the Peer-ID, this will identify the peer and its wallet. Signature is the current request signature, using `requestSigningKey`, the `m/1/1` derivative of the Extended Private Key.
 
-See [Bitcore Wallet Client](https://github.com/bitpay/bitcore-wallet-client/blob/master/lib/api.js#L73) for implementation details.
+See [Mangacore Wallet Client](https://github.com/bitpay/mangacore-wallet-client/blob/master/lib/api.js#L73) for implementation details.
 
 
 ## GET Endpoints
 `/v1/wallets/`: Get wallet information
 
 Returns:
- * Wallet object. (see [fields on the source code](https://github.com/bitpay/bitcore-wallet-service/blob/master/lib/model/wallet.js)).
+ * Wallet object. (see [fields on the source code](https://github.com/bitpay/mangacore-wallet-service/blob/master/lib/model/wallet.js)).
 
 `/v1/txhistory/`: Get Wallet's transaction history
  
@@ -116,12 +116,12 @@ Returns:
  
 `/v1/txproposals/`:  Get Wallet's pending transaction proposals and their status
 Returns:
- * List of pending TX Proposals. (see [fields on the source code](https://github.com/bitpay/bitcore-wallet-service/blob/master/lib/model/txproposal.js))
+ * List of pending TX Proposals. (see [fields on the source code](https://github.com/bitpay/mangacore-wallet-service/blob/master/lib/model/txproposal.js))
 
 `/v1/addresses/`: Get Wallet's main addresses (does not include change addresses)
 
 Returns:
- * List of Addresses object: (https://github.com/bitpay/bitcore-wallet-service/blob/master/lib/model/address.js)).  This call is mainly provided so the client check this addresses for incoming transactions (using a service like [Insight](https://insight.is)
+ * List of Addresses object: (https://github.com/bitpay/mangacore-wallet-service/blob/master/lib/model/address.js)).  This call is mainly provided so the client check this addresses for incoming transactions (using a service like [Insight](https://insight.is)
 
 `/v1/balance/`:  Get Wallet's balance
 
@@ -177,7 +177,7 @@ Returns:
 `/v1/txproposals/`: Add a new transaction proposal
 
 Required Arguments:
- * toAddress: RCPT Bitcoin address.
+ * toAddress: RCPT Mangacoin address.
  * amount: amount (in satoshis) of the mount proposed to be transfered
  * proposalsSignature: Signature of the proposal by the creator peer, using proposalSigningKey.
  * (opt) message: Encrypted private message to peers.
@@ -186,13 +186,13 @@ Required Arguments:
  * (opt) excludeUnconfirmedUtxos: Do not use UTXOs of unconfirmed transactions as inputs for this TX.
 
 Returns:
- * TX Proposal object. (see [fields on the source code](https://github.com/bitpay/bitcore-wallet-service/blob/master/lib/model/txproposal.js)). `.id` is probably needed in this case.
+ * TX Proposal object. (see [fields on the source code](https://github.com/bitpay/mangacore-wallet-service/blob/master/lib/model/txproposal.js)). `.id` is probably needed in this case.
 
 
 `/v3/addresses/`: Request a new main address from wallet . (creates an address on normal conditions)
 
 Returns:
- * Address object: (https://github.com/bitpay/bitcore-wallet-service/blob/master/lib/model/address.js)). Note that `path` is returned so client can derive the address independently and check server's response.
+ * Address object: (https://github.com/bitpay/mangacore-wallet-service/blob/master/lib/model/address.js)). Note that `path` is returned so client can derive the address independently and check server's response.
 
 `/v1/txproposals/:id/signatures/`: Sign a transaction proposal
 
@@ -200,17 +200,17 @@ Required Arguments:
  * signatures:  All Transaction's input signatures, in order of appearance.
   
 Returns:
- * TX Proposal object. (see [fields on the source code](https://github.com/bitpay/bitcore-wallet-service/blob/master/lib/model/txproposal.js)). `.status` is probably needed in this case.
+ * TX Proposal object. (see [fields on the source code](https://github.com/bitpay/mangacore-wallet-service/blob/master/lib/model/txproposal.js)). `.status` is probably needed in this case.
   
 `/v1/txproposals/:id/broadcast/`: Broadcast a transaction proposal
  
 Returns:
- * TX Proposal object. (see [fields on the source code](https://github.com/bitpay/bitcore-wallet-service/blob/master/lib/model/txproposal.js)). `.status` is probably needed in this case.
+ * TX Proposal object. (see [fields on the source code](https://github.com/bitpay/mangacore-wallet-service/blob/master/lib/model/txproposal.js)). `.status` is probably needed in this case.
   
 `/v1/txproposals/:id/rejections`: Reject a transaction proposal
  
 Returns:
- * TX Proposal object. (see [fields on the source code](https://github.com/bitpay/bitcore-wallet-service/blob/master/lib/model/txproposal.js)). `.status` is probably needed in this case.
+ * TX Proposal object. (see [fields on the source code](https://github.com/bitpay/mangacore-wallet-service/blob/master/lib/model/txproposal.js)). `.status` is probably needed in this case.
 
 `/v1/addresses/scan`: Start an address scan process looking for activity.
 
@@ -229,7 +229,7 @@ Required Arguments:
 `/v1/txproposals/:id/`: Deletes a transaction proposal. Only the creator can delete a TX Proposal, and only if it has no other signatures or rejections
 
  Returns:
- * TX Proposal object. (see [fields on the source code](https://github.com/bitpay/bitcore-wallet-service/blob/master/lib/model/txproposal.js)). `.id` is probably needed in this case.
+ * TX Proposal object. (see [fields on the source code](https://github.com/bitpay/mangacore-wallet-service/blob/master/lib/model/txproposal.js)). `.id` is probably needed in this case.
 
 `/v1/txconfirmations/:txid`: Unsubscribe from transaction `txid` and no longer listen to its confirmation.
 

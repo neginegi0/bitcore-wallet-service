@@ -38,32 +38,14 @@ var config = {
     },
   },
   blockchainExplorerOpts: {
-    btc: {
-      livenet: {
-        provider: 'insight',
-        url: 'https://insight.bitpay.com:443',
-      },
-      testnet: {
-        provider: 'insight',
-        url: 'https://test-insight.bitpay.com:443',
-        // Multiple servers (in priority order)
-        // url: ['http://a.b.c', 'https://test-insight.bitpay.com:443'],
-      },
+    livenet: {
+      provider: 'insight',
+      url: 'https://insight.manga-core.com:443',
     },
-    bch: {
-      livenet: {
-        provider: 'insight',
-        //url: 'https://cashexplorer.bitcoin.com',
-        url: 'https://bch-insight.bitpay.com:443',
-        addressFormat: 'cashaddr',  // copay, cashaddr, or legacy
-      },
-      testnet: {
-        provider: 'insight',
-        url: 'https://test-bch-insight.bitpay.com:443',
-        addressFormat: 'cashaddr',  // copay, cashaddr, or legacy
-      },
-
-    },
+    /*testnet: {
+      provider: 'insight',
+      url: 'https://test-insight.manga-core.com:443',
+    }*/
   },
   pushNotificationsOpts: {
     templatePath: './lib/templates',
@@ -83,7 +65,7 @@ var config = {
   //  port: 25,
   //  ignoreTLS: true,
   //  subjectPrefix: '[Wallet Service]',
-  //  from: 'wallet-service@bitcore.io',
+  //  from: 'wallet-service@mangacore.io',
   //  templatePath: './lib/templates',
   //  defaultLanguage: 'en',
   //  defaultUnit: 'btc',

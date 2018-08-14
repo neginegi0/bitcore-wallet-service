@@ -2,11 +2,11 @@
 
 var should = require('chai').should();
 var proxyquire = require('proxyquire');
-var bitcore = require('bitcore-lib');
+var mangacore = require('mangacore-lib');
 var sinon = require('sinon');
-var Service = require('../bitcorenode');
+var Service = require('../mangacorenode');
 
-describe('Bitcore Node Service', function() {
+describe('Mangacore Node Service', function() {
   describe('#constructor', function() {
     it('https settings from node', function() {
       var node = {
@@ -65,7 +65,7 @@ describe('Bitcore Node Service', function() {
     });
   });
   describe('#readHttpsOptions', function() {
-    var TestService = proxyquire('../bitcorenode', {
+    var TestService = proxyquire('../mangacorenode', {
       fs: {
         readFileSync: function(arg) {
           return arg;
@@ -109,14 +109,14 @@ describe('Bitcore Node Service', function() {
     it('livenet local insight', function() {
       var options = {
         node: {
-          network: bitcore.Networks.livenet,
+          network: mangacore.Networks.livenet,
           port: 3001
         }
       };
       var service = new Service(options);
       var config = service._getConfiguration();
       config.blockchainExplorerOpts.livenet.should.deep.equal({
-        'apiPrefix': '/insight-api',
+        'apiPrefix': '/insight-manga-api',
         'provider': 'insight',
         'url': 'http://localhost:3001'
       });
@@ -124,14 +124,14 @@ describe('Bitcore Node Service', function() {
     it('testnet local insight', function() {
       var options = {
         node: {
-          network: bitcore.Networks.testnet,
+          network: mangacore.Networks.testnet,
           port: 3001
         }
       };
       var service = new Service(options);
       var config = service._getConfiguration();
       config.blockchainExplorerOpts.testnet.should.deep.equal({
-        'apiPrefix': '/insight-api',
+        'apiPrefix': '/insight-manga-api',
         'provider': 'insight',
         'url': 'http://localhost:3001'
       });
@@ -144,7 +144,7 @@ describe('Bitcore Node Service', function() {
       function TestWSApp() {}
       TestWSApp.prototype.start = sinon.stub().callsArg(2);
       var listen = sinon.stub().callsArg(1);
-      var TestService = proxyquire('../bitcorenode', {
+      var TestService = proxyquire('../mangacorenode', {
         '../lib/expressapp': TestExpressApp,
         '../lib/wsapp': TestWSApp,
         'http': {
@@ -174,7 +174,7 @@ describe('Bitcore Node Service', function() {
       function TestWSApp() {}
       TestWSApp.prototype.start = sinon.stub().callsArg(2);
       var listen = sinon.stub().callsArgWith(1, new Error('test'));
-      var TestService = proxyquire('../bitcorenode', {
+      var TestService = proxyquire('../mangacorenode', {
         '../lib/expressapp': TestExpressApp,
         '../lib/wsapp': TestWSApp,
         'http': {
@@ -215,7 +215,7 @@ describe('Bitcore Node Service', function() {
           listen: listen
         };
       };
-      var TestService = proxyquire('../bitcorenode', {
+      var TestService = proxyquire('../mangacorenode', {
         '../lib/expressapp': TestExpressApp,
         '../lib/wsapp': TestWSApp,
         'https': {
@@ -260,7 +260,7 @@ describe('Bitcore Node Service', function() {
       TestLocker.prototype.listen = sinon.stub();
       function TestEmailService() {}
       TestEmailService.prototype.start = sinon.stub();
-      var TestService = proxyquire('../bitcorenode', {
+      var TestService = proxyquire('../mangacorenode', {
         '../lib/blockchainmonitor': TestBlockchainMonitor,
         '../lib/emailservice': TestEmailService,
         'socket.io': sinon.stub().returns({
@@ -288,7 +288,7 @@ describe('Bitcore Node Service', function() {
       TestLocker.prototype.listen = sinon.stub();
       function TestEmailService() {}
       TestEmailService.prototype.start = sinon.stub().callsArgWith(1, new Error('test'));
-      var TestService = proxyquire('../bitcorenode', {
+      var TestService = proxyquire('../mangacorenode', {
         '../lib/blockchainmonitor': TestBlockchainMonitor,
         '../lib/emailservice': TestEmailService,
         'socket.io': sinon.stub().returns({

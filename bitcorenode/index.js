@@ -7,8 +7,8 @@ var https = require('https');
 var http = require('http');
 var async = require('async');
 var path = require('path');
-var bitcore = require('bitcore-lib');
-var Networks = bitcore.Networks;
+var mangacore = require('mangacore-lib');
+var Networks = mangacore.Networks;
 var Locker = require('locker-server');
 var BlockchainMonitor = require('../lib/blockchainmonitor');
 var EmailService = require('../lib/emailservice');
@@ -19,11 +19,11 @@ var EventEmitter = require('events').EventEmitter;
 var baseConfig = require('../config');
 
 /**
- * A Bitcore Node Service module
+ * A Mangacore Node Service module
  * @param {Object} options
- * @param {Node} options.node - A reference to the Bitcore Node instance
+ * @param {Node} options.node - A reference to the Mangacore Node instance
 -* @param {Boolean} options.https - Enable https for this module, defaults to node settings.
- * @param {Number} options.bwsPort - Port for Bitcore Wallet Service API
+ * @param {Number} options.bwsPort - Port for Mangacore Wallet Service API
  * @param {Number} options.messageBrokerPort - Port for BWS message broker
  * @param {Number} options.lockerPort - Port for BWS locker port
  */
@@ -43,7 +43,7 @@ var Service = function(options) {
 
 util.inherits(Service, EventEmitter);
 
-Service.dependencies = ['insight-api'];
+Service.dependencies = ['insight-manga-api'];
 
 /**
  * This method will read `key` and `cert` files from disk based on `httpsOptions` and
@@ -81,12 +81,12 @@ Service.prototype._getConfiguration = function() {
   var providerOptions = {
     provider: 'insight',
     url: (self.node.https ? 'https://' : 'http://') + 'localhost:' + self.node.port,
-    apiPrefix: '/insight-api'
+    apiPrefix: '/insight-manga-api'
   };
 
-  // A bitcore-node is either livenet or testnet, so we'll pass
+  // A mangacore-node is either livenet or testnet, so we'll pass
   // the configuration options to communicate via the local running
-  // instance of the insight-api service.
+  // instance of the insight-manga-api service.
   if (self.node.network === Networks.livenet) {
     baseConfig.blockchainExplorerOpts = {
       livenet: providerOptions
